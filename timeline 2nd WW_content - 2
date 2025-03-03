@@ -1,0 +1,460 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Timeline Seconde Guerre Mondiale</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f0f2f5;
+            margin: 0;
+            padding: 20px;
+        }
+
+        .timeline-container {
+            display: flex;
+            justify-content: center;
+            background: white;
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        .timeline {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            position: relative;
+            padding-left: 40px;
+        }
+
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 50%;
+            top: 0;
+            width: 6px;
+            height: 100%;
+            background: linear-gradient(to bottom, #ff5733, #c70039, #0033cc, #008000);
+            transform: translateX(-50%);
+            border-radius: 3px;
+            z-index: 0;
+        }
+
+        .event-container {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            justify-content: space-between;
+            margin: 30px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .event-container img {
+            width: 140px;
+            height: 140px;
+            object-fit: cover;
+            border-radius: 10px;
+            box-shadow: 2px 2px 10px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease-in-out;
+            cursor: pointer;
+        }
+
+        .event-container img:hover {
+            transform: scale(1.1);
+        }
+
+        .event {
+            padding: 15px;
+            width: 280px;
+            text-align: center;
+            box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);
+            border-radius: 10px;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            background-color: white;
+        }
+
+        .event:hover {
+            transform: scale(1.05);
+        }
+
+        .category {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-transform: uppercase;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            width: 80%;
+            margin: 20px 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .before-war { background: #ff9999; border: 2px solid #c70039; }
+        .war { background: #9999ff; border: 2px solid #0033cc; }
+        .after-war { background: #99ff99; border: 2px solid #008000; }
+
+        /* Default white background for events */
+        .event.before-war { background: white; border: 2px solid #c70039; }
+        .event.war { background: white; border: 2px solid #0033cc; }
+        .event.after-war { background: white; border: 2px solid #008000; }
+
+        /* Hover styles */
+        .event.before-war:hover { background: #ffdddd; }
+        .event.war:hover { background: #ddddff; }
+        .event.after-war:hover { background: #ddffdd; }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal-content {
+            background-color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            width: 50%;
+            max-width: 500px;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-content {
+            white-space: pre-line; /* Gère les retours à la ligne (\n) */
+        }
+
+        .close {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            font-size: 20px;
+            cursor: pointer;
+        }
+
+        .image-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            text-align: center;
+        }
+
+        .image-modal-content {
+            max-width: 90%;
+            max-height: 90%;
+            margin-top: 5%;
+        }
+
+        .image-close {
+            position: absolute;
+            top: 15px;
+            right: 30px;
+            color: white;
+            font-size: 40px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+    </style>
+    <script>
+        function showModal(title, details) {
+            document.getElementById('modal-title').innerText = title;
+            document.getElementById('modal-details').innerHTML = details;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal').style.display = 'none';
+        }
+
+        function openImageModal(src) {
+            document.getElementById("modalImage").src = src;
+            document.getElementById("imageModal").style.display = "block";
+        }
+
+        function closeImageModal() {
+            document.getElementById("imageModal").style.display = "none";
+        }
+
+    </script>
+</head>
+<body>
+
+    <div class="timeline-container">
+        <div class="timeline">
+            <!-- Avant-guerre -->
+            <div class="category before-war">Avant-guerre</div>
+            <div class="event-container">
+                <img src="Versailles.jpg" alt="Avant-guerre" onclick="openImageModal(this.src)"> 
+                <div class="event before-war" onclick="showModal('1919', 'Traité de Versailles : considéré comme un Diktat injuste par les allemands, y compris le grand public. \n\n Lourdes réparations payées par l\'Allemagne, alors que les responsabilités de la 1ère guerre mondiales sont partagées \n\n Carte interactive 1ère guerre mondiale : <a href=\'https://www.histoirealacarte.com/la-Premiere-Guerre-mondiale-1914-1918/attentat-Sarajevo-l-entree-en-guerre\' target=\'_blank\'>Voir la carte</a> \n\n Carte interactive de l\'entre-deux-guerres : <a href=\'https://www.histoirealacarte.com/Europe-XXe-siecle-entre-les-deux-guerres/traites-de-paix-Premiere-Guerre-mondiale\' target=\'_blank\'>Voir la carte</a>')">
+                    <h3>1919</h3>
+                    <p>Traité de Versailles</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Crise.jpg" alt="Crise économique de 1929" onclick="openImageModal(this.src)">
+                <div class="event before-war" onclick="showModal('1929', 'Crise économique suite au Krach de Wall Street (Black Thursday). \n\n Chômage massif en Allemagne (6mio de chômeurs). \n\n Montée en force du parti nazi (NSDAP) à 2.6% en 1928 et 37% en 1932.')">
+                    <h3>1929</h3>
+                    <p>Crise économique</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Espagne.jpg" alt="Guerre civile d'Espagne" onclick="openImageModal(this.src)">
+                <div class="event before-war" onclick="showModal('1936-1939', 'Guerre civile d\'Espagne : soutien de l\'Allemagne et de l\'Italie à Franco, pour tester les nouvelles armes et stratégies (répéition générale). FR, GRB, URSS soutiennt le gouvernement en place. Finalement, Franco impose la dictature de 1939 à 1975. \n\n Les affinités qui lient DE, IT et JP sont le partage des valeurs d\'impérialisme et d\'expansionnisme, ainsi qu\'une hostilité envers les puissances dominantes, notamment des océans (USA, Royaume-Uni).')">
+                    <h3>1936-1939</h3>
+                    <p>Guerre civile d'Espagne</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Anschluss.jpg" alt="Marche à la guerre d'Hitler" onclick="openImageModal(this.src)">
+                <div class="event before-war" onclick="showModal('1933-1939', 'Octobre 1933 : l’Allemagne quitte la SDN \n Mars 1935 : rétablissement du service militaire obligatoire \n Mars 1936 : remilitarisation de la Rhénanie \n Mars 1938 : Anschluss (=annexion de l’Autriche) \n Septembre 1938 : accords de Munich suivis de l’annexion des Sudètes (région de Tchécoslovaquie peuplée de 3 millions d’Allemands) \n Mars 1939 : occupation de la Tchécoslovaquie, dont Prague. \n\n Politique d\'apaisement : Les démocraties occidentales (France, Royaume-Uni) cèdent à Hitler pour éviter la guerre. Permettant à Hitler d\'envahir la Pologne sans crainte d\'un front oriental. \n\nIdéologie nazie : Concept d\'espace vital (Lebensraum), hiérarchisation des races (aryenne). Volonté d\'expansion vers l\'Est (slaves), race inférieure, avec esclavage. \n\n Carte interactive de la Marche à la guerre : <a href=\' https://www.histoirealacarte.com/la-Seconde-Guerre-mondiale-1939-1945/la-marche-a-la-guerre\' target=\'_blank\'>Voir la carte</a>')">
+                    <h3>1933-1939</h3>
+                    <p>Marche à la guerre d'Hitler</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Pacte.jpg" alt="Pacte germano-soviétique" onclick="openImageModal(this.src)">
+                <div class="event before-war" onclick="showModal('23 août 1939', 'Pacte germano-soviétique (pacte Ribbentrop-Molotov) : Accord de non-agression entre l\'Allemagne et l\'URSS. \n\n Hitler voulait éviter que, dans le cas où la France et le Royaume-Uni réagiraient quand même à une invasion de la Pologne, l’Allemagne soit obligée de combattre sur deux fronts (Est et Ouest) comme lors de la première guerre mondiale. \n\n La Russie avait un intérêt à partager la Pologne en deux pour en annexer une partie (clauses secrètes du pacte)')">
+                    <h3>23 août 1939</h3>
+                    <p>Pacte germano-soviétique</p>
+                </div>
+            </div>
+
+            <!-- Guerre -->
+            <div class="category war">Guerre</div>
+            <div class="event-container">
+                <img src="Déclenchement.jpg" alt="Déclenchement de la guerre" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('1er sept. 1939', 'Déclenchement de la guerre : L\'Allemagne envahit la Pologne avec son armée (Wehrmacht).\nCeci dans le contexte des tensions du corridor de Dantzig (perdu lors du traité de Versailles, revendiqué par le Reich, coupait les territoires allemands en deux).\nProvoquant la déclaration de guerre de la France et du Royaume-Uni, en vertu d\'un accord avec la Pologne. \n\n En moins d’un mois (1er-27 sept.), la Pologne est partagée entre l’Allemagne et l’URSS. \nL’armée polonaise est détruite. \nLes exécutions sommaires et les incendies de villages se multiplient. \n25\'000 à 26\'000 prisonniers polonais (ex-officiers, petits propriétaires terriens, fonctionnaires) sont exécutés par les soviétiques qui sont également responsables de l’assassinat de 4\'000 Polonais (surtout des officiers) dans la forêt de Katyn. \n\nLa victoire rapide des Allemands est due en grande partie aux théories stratégiques d’Hitler à la base de la « guerre éclair » / Blitzkrieg : combinaison de l’emploi massif de chars (Panzerdivisionen) et de l’aviation (Stukas). \n\nEn oct. 1939, le nazi Hans Frank est nommé par Hitler gouverneur général de Pologne avec pour mission le « nettoyage » des Juifs (env. 1,5mio), de l’intelligentsia, du clergé et de l’aristocratie.')">
+                    <h3>1er Sept. 1939</h3>
+                    <p>Déclenchement de la guerre</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Drôle.jpg" alt="Drôle de guerre" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('sept. 1939 - mai 1940', 'Drôle de guerre : Période d\'inactivité sur le front occidental. Dans un premier temps, l’Italie fasciste et le Japon, alliés du Reich au sein de l’Axe, restent neutres. \n\nÀ cause de son retard en matière d’aviation et de blindés, la France est obligée de se limiter à la défense de la « ligne Maginot » (stratégie défensive / offensive).\n\n Avril 1940 : l’Allemagne occupe le Danemark et attaque la Norvège.')">
+                    <h3>Sept. 1939 - Mai 1940</h3>
+                    <p>Drôle de guerre</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="France.png" alt="Invasion de la France et BENELUX" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('mai-juin 1940', 'Les Allemands mettent fin à la drôle de guerre, en raison de leur manque de réserves, ils doivent remporter rapidement la guerre \n\n10 mai 1940 : la Wehrmacht (armée allemande) envahit les Pays-Bas, la Belgique et le Luxembourg\nLes chars allemands du général Guderian traversent les Ardennes, ce que les Français croyaient impossible.\n\nLes Allemands entrent dans Paris le 14 juin 1940\nLe maréchal Pétain est nommé à la tête du gouvernement réfugié à Bordeaux.\n\nLe 17 juin, il décide de demander l’armistice ; le général Charles de Gaulle quitte la France pour Londres\nFameux « appel du 18 juin » à la BBC (radio) exhortant à continuer le combat ; armistice signé à Rethondes dans le même wagon que le 11.11.1918\nLa France du Nord-Ouest est occupée par les nazis ; le Sud-Est est sous l’autorité du Régime de Vichy (collaborationniste), occupé à son tour en nov. 1942.')">
+                    <h3>Mai-Juin 1940</h3>
+                    <p>Invasion de la France</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Angleterre.jpg" alt="Bataille d'Angleterre" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('juillet 1940', 'Bataille d\'Angleterre : Premier échec d\'Hitler, prélude d’une longue guerre face à la résistance britannique, menée par Churchill.\nUne de ses phrases cultes : « il n\'y a rien d’autre à offrir que du sang, du labeur, des larmes et de la sueur »). \n\nSans la France, le R-U continue seul contre l’Axe.\n\nHitler ordonne en juillet 1940 à Hermann Goering (Generalfeldmarschall, chef de la Luftwaffe) de préparer « la grande bataille aérienne de la Luftwaffe »\nLes bombardiers ciblent les villes, campagne nommée Blitz.\n Par cette stratégie, Hitler a permis à l’industrie de guerre britannique de continuer à produire hors des villes et à la Royal Air Force (RAF) de se reconstituer\n\n La Luftwaffe essuie de fortes pertes et les bombardements sur les civils britanniques ne brisent pas leur esprit de résistance renforcé par les discours de Churchill')">
+                    <h3>Juillet 1940</h3>
+                    <p>Bataille d'Angleterre</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Barbarossa.png" alt="Opération Barbarossa" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('22 juin 1941', 'Opération Barbarossa : Invasion de l\'URSS par l\'Allemagne.\n\nRupture surprise du pacte germano-soviétique par le Reich\n\nEnjeux : espace vital/Lebensraum à l’Est + confrontation inévitable entre deux totalitarismes impérialistes qui visent la domination du monde\n\nStaline ne tient pas compte des informations sur une attaque imminente livrées par les Alliés et par ses services de renseignement + l’Armée rouge sous-équipée et avec haut-commandement affaibli par les purges des années 1936-38\n\nLes Nazis appellent à une guerre totale contre le « judéo-bolchévisme »\nLes Einsatzgruppen (unités mobiles d’extermination qui accompagnent la Wehrmacht) exterminent les Juifs, les Tziganes et les commissaires du parti communiste → premiers massacres collectifs de Juifs de grande envergure\n\nRapidement la Wehrmacht envahit les pays baltes, la Biélorussie et une grande partie de l’Ukraine\nElle assiège Leningrad en sept. 1941 et tente de prendre Moscou en l’encerclant. Staline reste à Moscou.')">
+                    <h3>22 Juin 1941</h3>
+                    <p>Opération Barbarossa</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Pearl Harbour.jpg" alt="Attaque de Pearl Harbor" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('7 décembre 1941', 'Attaque de Pearl Harbor : Entrée en guerre des États-Unis.\n\nLes Japonais attaquent, sans déclaration de guerre, la base aérienne américaine de Pearl Harbor (Pacifique, Hawaï)\n\n8 déc. 1941 : le Président Roosevelt déclare la guerre au Japon\n\n3 jours plus tard, le Reich, allié au Japon, déclare la guerre aux USA (depuis 1940 « l’arsenal » des démocraties).\n\n Carte interactive La guerre devient mondiale : <a href=\'https://www.histoirealacarte.com/la-Seconde-Guerre-mondiale-1939-1945/extension-du-conflit-1941-1942\' target=\'_blank\'>Voir la carte</a>')">
+                    <h3>7 Déc. 1941</h3>
+                    <p>Attaque de Pearl Harbor</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Wannsee.jpg" alt="Conférence de Wannsee" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('20 janvier 1942', 'Conférence de Wannsee (banlieue de Berlin): Planification de la Solution finale pour l\'extermination des Juifs. Formée de pas plus de 15 hauts fonctionnaires du parti nazi et de l\'administration allemande.\n\nDe très nombreux Juifs se trouvaient alors dans des ghettos pour une déportation ultérieure (ex : ghetto de Varsovie, 400\'000).\nFin sept. 1941, Hitler avait autorisé la déportation via les chemins de fer du Reich des Juifs allemands, autrichiens et tchèques essentiellement en Pologne occupée (la grande majorité d\'entre eux sera tuée). Le génocide / Völkermord des Juifs fera 6 millions de morts. C’est le plus grand génocide organisé de l’histoire.')">
+                    <h3>20 Janv. 1942</h3>
+                    <p>Conférence de Wannsee</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Rafle.jpg" alt="Rafle du Vél d’Hiv à Paris" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('16-17 juillet 1942', 'Arrestation par surprise de plus de 13\'000 Juifs parisiens de 2 à 60 ans, tous des Juifs apatrides (notamment des Juifs anciennement Allemands, Autrichiens ou Polonais).\n\nRassemblés au vélodrom d\'hiver et déportés en majorité au camp d\'extermination d\'Auschwitz-Birkenau (quelques dizaines en reviendront...).\n\nLes Français ont pris l’initiative de livrer au Reich les enfants juifs.')">
+                    <h3>16-17 juillet 1942</h3>
+                    <p>Rafle du Vél d’Hiv à Paris</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="El-Alamein.png" alt="El-Alamein" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('Octobre 1942', 'El-Alamein : Défaite de l\'Afrika Korps.\n\nLes Britanniques infligent une défaite à l’Afrika Korps allemand du général Rommel.\n\nPremier recul des puissances de l’Axe\n\nFin du Blitzkrieg')">
+                    <h3>Octobre 1942</h3>
+                    <p>El-Alamein</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Eisenhower.jpg" alt="Débarquement de troupes américaines en Afrique du Nord" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('8 nov. 1942', 'Sous la commande d\'Eisenhower, les troupes américaines débarquent en Afrique du Nord française à la demande de Staline pour soulager le front oriental.\n\nRiposte de l’Allemagne qui occupe la zone libre en France.\n\nA la même période, le Général de Gaulle émerge comme le représentant de la France libre et l’interlocuteur des Alliés.')">
+                    <h3>8 nov. 1942</h3>
+                    <p>Débarquement de troupes américaines en Afrique du Nord</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Stalingrad.png" alt="Stalingrad" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('Janv.-Fév. 1943', 'Stalingrad : Capitulation allemande, qui marque un tournant sur le front oriental.\n\nLe maréchal allemand von Paulus et ses hommes capitulent à Stalingrad après une guerre urbaine très violente (2 millions de morts), ce qui brise le mythe de l’invincibilité allemande.')">
+                    <h3>Janv.-Fév. 1943</h3>
+                    <p>Stalingrad</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Varsovie.jpg" alt="Révolte des Juifs du ghetto de Varsovie" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('Printemps 1943', 'Lutte courageuse qui montre la puissance d’hommes et de femmes déterminés.\n\nAprès 4 semaines de combat, le ghetto est détruit et les survivants sont déportés dans des camps.')">
+                    <h3>Printemps 1943</h3>
+                    <p>Révolte des Juifs du ghetto de Varsovie</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Italie.jpg" alt="Les Alliés débarquent dans le sud de l’Italie" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('juil-sept 1943', '10 juillet 1943 : Les Alliés débarquent dans le sud de l’Italie\n\n25 juillet 1943 : Mussolini est arrêté, puis libéré par un commando SS, puis placé à la tête de la République de Salò (Nord de l’Italie)\n\n8 sept. 1943 : reddition de l’Italie décidée par Pietro Badoglio.')">
+                    <h3>juil-sept 1943</h3>
+                    <p>Les Alliés débarquent dans le sud de l’Italie</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Débarquement.jpg" alt="Débarquement en Normandie" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('6 juin 1944', 'Débarquement en Normandie des Alliés : Opération Overlord, libération de la France.\n\nDécidé par Roosevelt, Churchill et Staline lors de la Conférence de Téhéran en nov. 1943\n\nDirigée par le général américain Dwight Eisenhower (à la tête des forces alliées pour la libération de l’Europe ; recevra de l’Allemagne la capitulation du 8 mai 1945 ; sera président des USA ¨1952-60)\n\nCoordination entre Américains et Britanniques.\n\nChances de succès faibles, estimées à 50% en raison de :\n1) Conditions maritimes\n2) Conditions météorologiques\n3) Mur de l’Atlantique; dispositif de défense allemand censé empêcher tout débarquement sur les côtes françaises et formé de blockhaus, canons, mitrailleuses, mines, fossés antichars, barbelés etc.)\n\nD Day: plus de 10\'000 avions de la Royal Air Force et des United States Army Air Force + 4\'000 bateaux de débarquement + 5 divisions (50\'000 hommes)\n Sur 80 km de côte répartie en 5 plages\n\nMilliers de victimes, hécatombe au début\n\n15 août : débarquement en Provence\n\n25 août : Paris est libérée des nazis par le général Leclerc et les Américains.')">
+                    <h3>6 Juin 1944</h3>
+                    <p>Débarquement en Normandie</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Walkyrie.jpg" alt="Opération Walkyrie" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('20 juillet 1944', 'Attentat de Claus von Stauffenberg (officier de la Wehrmacht) contre Hitler dans son QG de Prusse orientale, la « tanière du loup » (Wolfsschanze)\n\nBombe placée contre le pied de la table où Hitler évalue la situation avec le haut commandement de la Wehrmacht\nCharge explosive trop faible. Hitler seulement blessé.\n\nExécution de Stauffenberg et des autres conjurés.')">
+                    <h3>20 juillet 1944</h3>
+                    <p>Opération Walkyrie</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Paris.jpg" alt="Libération de Paris" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('25 août 1944', 'Libération de Paris.\n\nLe même jour, Charles de Gaulle, chef du Gouvernement provisoire de la République française, se rend à l\'Hôtel de Ville où il prononce un discours à la population dont un extrait est resté célèbre : « Paris outragé ! Paris brisé ! Paris martyrisé ! Mais Paris libéré ! ».')">
+                    <h3>25 Août 1944</h3>
+                    <p>Libération de Paris</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Berlin.jpg" alt="Bataille de Berlin" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('avril-mai 1945', 'L’Armée Rouge entre dans Berlin après avoir progressé en Europe suite à la victoire de Leningrad ; assaut donné par le maréchal Joukov.')">
+                    <h3>avril-mai 1945</h3>
+                    <p>Bataille de Berlin</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Suicide.jpg" alt="Suicide d'Hitler" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('30 avril 1945', 'Hitler se suicide.')">
+                    <h3>30 avril 1945</h3>
+                    <p>Suicide d'Hitler</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Capitulation.jpg" alt="Capitulation de l'Allemagne" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('8 mai 1945', 'Capitulation de l\'Allemagne.\n\nSans condition de la Wehrmacht envoyée par le général allemand Keitel au maréchal soviétique Joukov et à Eisenhower.')">
+                    <h3>8 mai 1945</h3>
+                    <p>Capitulation de l\'Allemagne</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Hiroshima.jpg" alt="Bombes atomiques américaines sur Hiroshima et Nagasaki" onclick="openImageModal(this.src)">
+                <div class="event war" onclick="showModal('6 et 9 août 1945', 'Bombes atomiques sur Hiroshima et Nagasaki.\n\nPar suite du refus obstiné des Japonais de capituler\n\nFinalement reddition, capitulation annoncée par l’empereur Hirohito le 14 août.')">
+                    <h3>6 et 9 août 1945</h3>
+                    <p>Bombes atomiques sur Hiroshima et Nagasaki</p>
+                </div>
+            </div>
+
+            <!-- Après-guerre -->
+            <div class="category after-war">Après-guerre</div>
+            <div class="event-container">
+                <img src="Concentration.jpg" alt="Bilan et découverte des camps de concentration" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('1945', 'Découverte des camps de concentration.')">
+                    <h3>1945</h3>
+                    <p>Découverte des camps de concentration</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Yalta.jpg" alt="Conférence de Yalta" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('Février 1945', 'Reconstruction de l\'Europe après la guerre.')">
+                    <h3>Février 1945</h3>
+                    <p>Conférence de Yalta</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Potsdam.jpg" alt="Conférence de Potsdam" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('Juil-Août 1945', 'Règlement du sort de l\'Allemagne, début de la guerre froide.')">
+                    <h3>Juillet-Août 1945</h3>
+                    <p>Conférence de Potsdam</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="ONU.jpg" alt="Création de l'ONU" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('24 oct. 1945', 'Création de l\'ONU : Organisation des Nations Unies pour maintenir la paix.')">
+                    <h3>24 Oct. 1945</h3>
+                    <p>Création de l'ONU</p>
+                </div>
+            </div>                                 
+            <div class="event-container">
+                <img src="Nuremberg.jpg" alt="Procès de Nuremberg" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('Nov. 1945 - Oct. 1946', 'Jugement des principaux criminels nazis pour crimes contre l\'humanité')">
+                    <h3>Nov. 1945 - Oct. 1946</h3>
+                    <p>Procès de Nuremberg</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Israel.jpg" alt="Création de l'État d'Israël" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('14 mai 1948', 'Réponse à la Shoah et à la diaspora juive.')">
+                    <h3>14 mai 1948</h3>
+                    <p>Création de l'État d'Israël</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="DDH.jpg" alt="Déclaration universelle des droits de l'homme" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('10 déc. 1948', 'Déclaration universelle des droits de l\'homme : Adoptée par l\'ONU.')">
+                    <h3>10 Déc. 1948</h3>
+                    <p>Déclaration universelle des droits de l'homme</p>
+                </div>
+            </div>
+            <div class="event-container">
+                <img src="Rome.jpg" alt="Traité de Rome" onclick="openImageModal(this.src)">
+                <div class="event after-war" onclick="showModal('1957', 'Début de la construction européenne : Objectif de paix et de réconciliation.')">
+                    <h3>1957</h3>
+                    <p>Traité de Rome</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="modal" class="modal" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation();">
+            <span class="close" onclick="closeModal()">&times;</span>
+            <h2 id="modal-title"></h2>
+            <p id="modal-details"></p>
+        </div>
+    </div>
+
+    <div id="imageModal" class="image-modal" onclick="closeImageModal()">
+        <span class="image-close">&times;</span>
+        <img class="image-modal-content" id="modalImage">
+    </div>
+
+</body>
+</html>
